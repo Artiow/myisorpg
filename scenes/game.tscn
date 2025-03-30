@@ -1,10 +1,11 @@
-[gd_scene load_steps=9 format=3 uid="uid://b40tg8cocq8rd"]
+[gd_scene load_steps=10 format=3 uid="uid://b40tg8cocq8rd"]
 
 [ext_resource type="PackedScene" uid="uid://jddfgvfucfsj" path="res://scenes/player.tscn" id="1_80nbo"]
 [ext_resource type="PackedScene" uid="uid://bychx116r1vav" path="res://scenes/world.tscn" id="1_e2o6t"]
 [ext_resource type="PackedScene" uid="uid://krgfsgu728jt" path="res://scenes/platform_green_big.tscn" id="3_feb5d"]
 [ext_resource type="PackedScene" uid="uid://6eykw7iifspf" path="res://scenes/coin.tscn" id="4_lbhrr"]
 [ext_resource type="PackedScene" uid="uid://du2jkcl35v483" path="res://scenes/killzone.tscn" id="5_iywne"]
+[ext_resource type="PackedScene" uid="uid://dyqmbo66567qp" path="res://scenes/slime_green.tscn" id="6_p57ef"]
 
 [sub_resource type="Animation" id="Animation_lbhrr"]
 length = 0.001
@@ -107,6 +108,30 @@ position = Vector2(313, -24)
 [node name="Coin15" parent="Coins" instance=ExtResource("4_lbhrr")]
 position = Vector2(327, -24)
 
+[node name="Coin16" parent="Coins" instance=ExtResource("4_lbhrr")]
+position = Vector2(-153, -40)
+
+[node name="Coin17" parent="Coins" instance=ExtResource("4_lbhrr")]
+position = Vector2(-167, -40)
+
+[node name="Coin18" parent="Coins" instance=ExtResource("4_lbhrr")]
+position = Vector2(-296, -103)
+
+[node name="Coin19" parent="Coins" instance=ExtResource("4_lbhrr")]
+position = Vector2(-296, -89)
+
+[node name="Coin20" parent="Coins" instance=ExtResource("4_lbhrr")]
+position = Vector2(-282, -89)
+
+[node name="Coin21" parent="Coins" instance=ExtResource("4_lbhrr")]
+position = Vector2(-282, -103)
+
+[node name="Coin22" parent="Coins" instance=ExtResource("4_lbhrr")]
+position = Vector2(-310, -103)
+
+[node name="Coin23" parent="Coins" instance=ExtResource("4_lbhrr")]
+position = Vector2(-310, -89)
+
 [node name="Platforms" type="Node" parent="."]
 
 [node name="PlatformGreenBig" parent="Platforms" instance=ExtResource("3_feb5d")]
@@ -123,3 +148,8 @@ autoplay = "move_loop"
 
 [node name="PlatformGreenBig3" parent="Platforms" instance=ExtResource("3_feb5d")]
 position = Vector2(8, -32)
+
+[node name="Enemies" type="Node" parent="."]
+
+[node name="SlimeGreen" parent="Enemies" instance=ExtResource("6_p57ef")]
+position = Vector2(-200, -16)

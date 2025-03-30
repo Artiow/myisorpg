@@ -5,9 +5,10 @@ const SPEED = 150.0
 const JUMP_VELOCITY = -275.0
 const JUMP_LIMIT = 2
 
-
-@onready var raycast = $RayCast2D
-@onready var sprite = $AnimatedSprite2D
+@onready var collision: CollisionShape2D = $CollisionShape2D
+@onready var raycast: RayCast2D = $RayCast2D
+@onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
+@onready var kill_timer: Timer = $KillTimer
 
   
 var jump_count = 0
@@ -55,3 +56,14 @@ func jump_process() -> void:
 
 func can_jump() -> bool:
 	return is_on_floor() or (jump_count < JUMP_LIMIT)
+
+
+func kill() -> void:
+	Engine.time_scale = 0.5
+	collision.queue_free()
+	kill_timer.start()
+
+
+func _on_kill_timer_timeout() -> void:
+	Engine.time_scale = 1.0
+	get_tree().reload_current_scene()

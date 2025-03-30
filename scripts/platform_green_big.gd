@@ -1,8 +1,8 @@
 extends StaticBody2D
 
 
-@onready var collision = $CollisionShape2D
-@onready var area = $Area2D
+@onready var collision: CollisionShape2D = $CollisionShape2D
+@onready var area: Area2D = $Area2D
 
 
 func drop() -> void:
