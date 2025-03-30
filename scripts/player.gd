@@ -18,7 +18,7 @@ func _physics_process(delta: float) -> void:
 	if not is_on_floor():
 		# Add the gravity.
 		velocity += get_gravity() * delta
-	elif Input.is_action_just_pressed("ui_down") and raycast.is_colliding():
+	elif Input.is_action_just_pressed("drop_down") and raycast.is_colliding():
 		# Handle drop through platforms.
 		drop_process()
 
@@ -27,7 +27,7 @@ func _physics_process(delta: float) -> void:
 
 	# Get the input direction and handle the movement/deceleration.
 	# As good practice, you should replace UI actions with custom gameplay actions.
-	var direction := Input.get_axis("ui_left", "ui_right")
+	var direction := Input.get_axis("move_left", "move_right")
 	if direction:
 		velocity.x = direction * SPEED
 		if direction > 0 and sprite.flip_h:
@@ -47,7 +47,7 @@ func drop_process() -> void:
 
 
 func jump_process() -> void:
-	if Input.is_action_just_pressed("ui_accept") and can_jump():
+	if Input.is_action_just_pressed("jump") and can_jump():
 		velocity.y = JUMP_VELOCITY
 		jump_count += 1
 	elif is_on_floor():
