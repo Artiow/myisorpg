@@ -1,0 +1,10 @@
+# Godot 4+ specific ignores
+.godot/
+/android/
+
+# Godot adddons ignores
+addons/
+
+# IntelliJ IDEA specific ignores
+.idea/
+*.iml
