@@ -6,6 +6,9 @@ const JUMP_VELOCITY: float = -275.0
 const JUMP_LIMIT: int = 2
 
 
+@onready var game_manager: Node = %GameManager
+
+
 @onready var collision: CollisionShape2D = $CollisionShape2D
 @onready var raycast: RayCast2D = $RayCast2D
 @onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
@@ -83,3 +86,8 @@ func kill() -> void:
 func _on_kill_timer_timeout() -> void:
 	Engine.time_scale = 1.0
 	get_tree().reload_current_scene()
+
+
+func add_score_point() -> void:
+	game_manager.add_player_score_point()
+	

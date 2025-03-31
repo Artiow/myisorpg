@@ -16,6 +16,10 @@ config/features=PackedStringArray("4.4", "GL Compatibility")
 config/icon="res://assets/icon.svg"
 config/canvas_textures/default_texture_filter=1
 
+[autoload]
+
+Music="*res://scenes/music.tscn"
+
 [editor]
 
 version_control/plugin_name="GitPlugin"

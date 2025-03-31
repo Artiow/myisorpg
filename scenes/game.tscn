@@ -1,12 +1,18 @@
-[gd_scene load_steps=19 format=3 uid="uid://b40tg8cocq8rd"]
+[gd_scene load_steps=21 format=3 uid="uid://b40tg8cocq8rd"]
 
 [ext_resource type="PackedScene" uid="uid://jddfgvfucfsj" path="res://scenes/player.tscn" id="1_80nbo"]
 [ext_resource type="PackedScene" uid="uid://bychx116r1vav" path="res://scenes/world.tscn" id="1_e2o6t"]
+[ext_resource type="Script" uid="uid://dlncsxh7sqmmc" path="res://scripts/game_manager.gd" id="1_gee14"]
 [ext_resource type="PackedScene" uid="uid://krgfsgu728jt" path="res://scenes/platform_green_big.tscn" id="3_feb5d"]
 [ext_resource type="PackedScene" uid="uid://6eykw7iifspf" path="res://scenes/coin.tscn" id="4_lbhrr"]
 [ext_resource type="PackedScene" uid="uid://du2jkcl35v483" path="res://scenes/killzone.tscn" id="5_iywne"]
 [ext_resource type="PackedScene" uid="uid://dyqmbo66567qp" path="res://scenes/slime_green.tscn" id="6_p57ef"]
 [ext_resource type="FontFile" uid="uid://b7tdemnn470ev" path="res://assets/fonts/PixelOperator8-Bold.ttf" id="7_u5sy4"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_0tnpc"]
+font = ExtResource("7_u5sy4")
+font_size = 8
+font_color = Color(0.980392, 0.827451, 0.701961, 1)
 
 [sub_resource type="Animation" id="Animation_lbhrr"]
 length = 0.001
@@ -133,6 +139,20 @@ font_size = 8
 font_color = Color(1, 0.823529, 0.2, 1)
 
 [node name="Game" type="Node2D"]
+
+[node name="GameManager" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("1_gee14")
+
+[node name="ScoreLabel" type="Label" parent="GameManager"]
+offset_left = -833.0
+offset_top = -197.0
+offset_right = -733.0
+offset_bottom = -167.0
+text = "Well done! You collected %s coins!"
+label_settings = SubResource("LabelSettings_0tnpc")
+horizontal_alignment = 1
+autowrap_mode = 2
 
 [node name="Player" parent="." instance=ExtResource("1_80nbo")]
 
