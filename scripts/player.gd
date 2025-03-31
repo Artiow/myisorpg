@@ -13,6 +13,8 @@ const JUMP_LIMIT: int = 2
 @onready var raycast: RayCast2D = $RayCast2D
 @onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var kill_timer: Timer = $KillTimer
+@onready var jump_sound: AudioStreamPlayer2D = $JumpSound
+@onready var death_sound: AudioStreamPlayer2D = $DeathSound
 
 
 var jump_count: int = 0
@@ -62,11 +64,16 @@ func drop_process() -> void:
 
 func jump_process() -> void:
 	if Input.is_action_just_pressed("jump") and can_jump():
-		sprite.call_deferred("play", "jump")
-		velocity.y = JUMP_VELOCITY
+		call_deferred("_do_jump")
 		jump_count += 1
 	elif is_on_floor():
 		jump_count = 0
+
+
+func _do_jump() -> void:
+	sprite.play("jump")
+	jump_sound.play()
+	velocity.y = JUMP_VELOCITY
 
 
 func can_jump() -> bool:
@@ -77,10 +84,15 @@ func kill() -> void:
 	if not dead:
 		dead = true
 		Engine.time_scale = 0.5
-		velocity.y = JUMP_VELOCITY / 2
-		sprite.call_deferred("play", "death", 2)
-		collision.queue_free()
+		call_deferred("_do_kill")
 		kill_timer.start()
+
+
+func _do_kill() -> void:
+	sprite.play("death", 2)
+	death_sound.play()
+	velocity.y = JUMP_VELOCITY / 2
+	collision.queue_free()
 
 
 func _on_kill_timer_timeout() -> void:
