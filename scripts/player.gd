@@ -64,16 +64,16 @@ func drop_process() -> void:
 
 func jump_process() -> void:
 	if Input.is_action_just_pressed("jump") and can_jump():
-		call_deferred("_do_jump")
+		call_deferred("_play_jump_apperance")
+		velocity.y = JUMP_VELOCITY
 		jump_count += 1
 	elif is_on_floor():
 		jump_count = 0
 
 
-func _do_jump() -> void:
+func _play_jump_apperance() -> void:
 	sprite.play("jump")
 	jump_sound.play()
-	velocity.y = JUMP_VELOCITY
 
 
 func can_jump() -> bool:
@@ -84,15 +84,15 @@ func kill() -> void:
 	if not dead:
 		dead = true
 		Engine.time_scale = 0.5
-		call_deferred("_do_kill")
+		call_deferred("_play_kill_apperance")
+		velocity.y = JUMP_VELOCITY / 2
+		collision.queue_free()
 		kill_timer.start()
 
 
-func _do_kill() -> void:
+func _play_kill_apperance() -> void:
 	sprite.play("death", 2)
 	death_sound.play()
-	velocity.y = JUMP_VELOCITY / 2
-	collision.queue_free()
 
 
 func _on_kill_timer_timeout() -> void:
