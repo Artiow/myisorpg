@@ -1,103 +1,114 @@
+class_name Player2D
 extends CharacterBody2D
 
-
-@onready var game_manager: Node = %GameManager
-@onready var collision: CollisionShape2D = $CollisionShape2D
-@onready var raycast: RayCast2D = $RayCast2D
-@onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
+@onready var game_manager: GameManager = %GameManager
+@onready var collision_shape: CollisionShape2D = $CollisionShape
+@onready var platform_raycast: RayCast2D = $PlatformRayCast
+@onready var sprite: AnimatedSprite2D = $AnimatedSprite
 @onready var kill_timer: Timer = $KillTimer
 @onready var jump_sound: AudioStreamPlayer2D = $JumpSound
 @onready var death_sound: AudioStreamPlayer2D = $DeathSound
 
-@export var speed: float = 150.0
-@export var jump_velocity: float = -275.0
-@export var jump_limit: int = 2
-@export var death_jump_velocity: float = -150.0
+@export var speed := 150.0
+@export var jump_velocity := -275.0
+@export var jump_limit := 2
+@export var death_jump_velocity := -150.0
 
-var jump_count: int = 0
-var dead: bool = false
+var _jump_count := 0
+var _is_dead := false
 
 
-func _physics_process(delta: float) -> void:
-	if not is_on_floor():
-		# Add the gravity.
-		velocity += get_gravity() * delta
-	elif Input.is_action_just_pressed("drop_down") and raycast.is_colliding():
-		# Handle drop through platforms.
-		drop_process()
-
-	# Handle jump.
-	jump_process()
-
-	# Get the input direction and handle the movement/deceleration.
-	# As good practice, you should replace UI actions with custom gameplay actions.
-	var direction := Input.get_axis("move_left", "move_right")
-	if direction and not dead:
-		velocity.x = direction * speed
-		if direction > 0 and sprite.flip_h:
-			sprite.set_deferred("flip_h", false)
-		if direction < 0 and not sprite.flip_h:
-			sprite.set_deferred("flip_h", true)
-	else:
-		velocity.x = move_toward(velocity.x, 0, speed)
-
-	if not dead:
-		if is_on_floor():
-			if direction:
-				sprite.call_deferred("play", "run")
-			else:
-				sprite.call_deferred("play", "idle")
-		elif sprite.animation != "jump":
-			sprite.call_deferred("play", "jump")
-
+func _physics_process(delta: float):
+	_apply_gravity(delta)
+	_handle_platform_drop()
+	_handle_jump()
+	_handle_movement()
 	move_and_slide()
 
 
-func drop_process() -> void:
-	var collider = raycast.get_collider()
-	if collider is CollisionObject2D and collider.has_method("drop"):
-		collider.drop()
+func _apply_gravity(delta: float):
+	if not is_on_floor():
+		velocity.y += get_gravity().y * delta
+		_play_fall_animation()
 
 
-func jump_process() -> void:
-	if Input.is_action_just_pressed("jump") and can_jump():
-		call_deferred("_play_jump_apperance")
+func _handle_platform_drop():
+	if Input.is_action_just_pressed(&"drop_down") and platform_raycast.is_colliding():
+		var platform := platform_raycast.get_collider()
+		if platform is Platform2D:
+			platform.drop_through()
+
+
+func _handle_jump():
+	if Input.is_action_just_pressed(&"jump") and can_jump():
 		velocity.y = jump_velocity
-		jump_count += 1
+		_jump_count += 1
+		_play_jump_animation()
 	elif is_on_floor():
-		jump_count = 0
+		_jump_count = 0
 
 
-func _play_jump_apperance() -> void:
-	sprite.play("jump")
-	jump_sound.play()
+func _handle_movement():
+	var direction := Input.get_axis(&"move_left", &"move_right")
+
+	if not _is_dead and direction:
+		velocity.x = direction * speed
+		sprite.flip_h = direction < 0
+	else:
+		velocity.x = move_toward(velocity.x, 0, speed)
+
+	if not _is_dead and is_on_floor():
+		sprite.play(&"run" if direction else &"idle")
 
 
 func can_jump() -> bool:
-	return not dead and (is_on_floor() or (jump_count < jump_limit))
+	return not _is_dead and (is_on_floor() or _jump_count < jump_limit)
 
 
-func kill() -> void:
-	if not dead:
-		dead = true
+func collect(item: StringName, quantity: int = 1):
+	if item == &"coin":
+		game_manager.add_player_score(quantity)
+
+
+func kill(killer: Node2D = null) -> void:
+	if _is_dead:
+		return
+
+	_is_dead = true
+	Engine.time_scale = 0.5
+	_handle_death()
+	kill_timer.start()
+
+	if killer:
+		print_debug(self, " is killed by ", killer)
+	else:
 		print_debug(self, " is killed")
-		Engine.time_scale = 0.5
-		call_deferred("_play_kill_apperance")
-		velocity.y = death_jump_velocity
-		collision.queue_free()
-		kill_timer.start()
 
 
-func _play_kill_apperance() -> void:
-	sprite.play("death", 2)
+func _handle_death():
+	velocity.y = death_jump_velocity
+	collision_shape.queue_free()
+	_play_death_animation()
+
+
+func _play_fall_animation():
+	if not _is_dead and sprite.animation != &"jump":
+		sprite.play(&"jump")
+
+
+func _play_jump_animation():
+	if sprite.animation == &"jump":
+		sprite.frame = 0
+
+	sprite.play(&"jump")
+	jump_sound.play()
+
+
+func _play_death_animation():
+	sprite.play(&"death", 2)
 	death_sound.play()
 
 
-func _on_kill_timer_timeout() -> void:
+func _on_kill_timer_timeout():
 	Engine.time_scale = 1.0
 	get_tree().reload_current_scene()
-
-
-func add_score_point() -> void:
-	game_manager.add_player_score_point()
-	

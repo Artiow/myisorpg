@@ -143,6 +143,7 @@ font_size = 8
 font_color = Color(1, 0.823529, 0.2, 1)
 
 [node name="Game" type="Node2D"]
+metadata/_edit_lock_ = true
 
 [node name="GameManager" type="Node" parent="."]
 unique_name_in_owner = true
@@ -153,7 +154,7 @@ offset_left = -978.0
 offset_top = -280.0
 offset_right = -878.0
 offset_bottom = -250.0
-text = "Well done! You collected %s coins!"
+text = "Well done! You collected %.f coins!"
 label_settings = SubResource("LabelSettings_0tnpc")
 horizontal_alignment = 1
 autowrap_mode = 2

@@ -15,26 +15,26 @@ collision_layer = 2
 collision_mask = 0
 script = ExtResource("1_sr7hh")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="Sprite" type="Sprite2D" parent="."]
 texture = ExtResource("1_v13q2")
 offset = Vector2(0, 4.5)
 region_enabled = true
 region_rect = Rect2(16, 0, 32, 9)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CollisionShape" type="CollisionShape2D" parent="."]
 position = Vector2(0, 4.5)
 shape = SubResource("RectangleShape2D_2qug0")
 one_way_collision = true
 
-[node name="Area2D" type="Area2D" parent="."]
+[node name="MonitoringArea" type="Area2D" parent="."]
 collision_layer = 0
 collision_mask = 8
 monitoring = false
 monitorable = false
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+[node name="CollisionShape" type="CollisionShape2D" parent="MonitoringArea"]
 position = Vector2(0, -2.5)
 shape = SubResource("RectangleShape2D_3gcnc")
 
-[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
-[connection signal="body_exited" from="Area2D" to="." method="_on_area_2d_body_exited"]
+[connection signal="body_entered" from="MonitoringArea" to="." method="_on_monitoring_area_body_entered"]
+[connection signal="body_exited" from="MonitoringArea" to="." method="_on_monitoring_area_body_exited"]

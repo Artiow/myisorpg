@@ -1,20 +1,21 @@
+class_name GameManager
 extends Node
 
+@onready var _score_label: Label = $ScoreLabel
+@onready var _score_label_format := _score_label.text
 
-@onready var score_label: Label = $ScoreLabel
-
-
-var player_score = 0
-
-
-func _ready() -> void:
-	update_label()
+var _player_score := 0
 
 
-func add_player_score_point() -> void:
-	player_score += 1
-	update_label()
+func _ready():
+	_update_label()
 
 
-func update_label() -> void:
-	score_label.text = "Well done! You collected %s coins!" % player_score
+func add_player_score(points: int = 1):
+	_player_score += points
+	_update_label()
+	print_debug(self, ": points added = %.f, total = %.f" % [points, _player_score])
+
+
+func _update_label():
+	_score_label.text = _score_label_format % _player_score

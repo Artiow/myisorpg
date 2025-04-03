@@ -241,18 +241,18 @@ collision_layer = 8
 collision_mask = 3
 script = ExtResource("1_onrkg")
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+[node name="AnimatedSprite" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -12)
 sprite_frames = SubResource("SpriteFrames_0qfo5")
 animation = &"idle"
 autoplay = "idle"
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CollisionShape" type="CollisionShape2D" parent="."]
 position = Vector2(0, -4)
 rotation = 1.5708
 shape = SubResource("CapsuleShape2D_4flbx")
 
-[node name="RayCast2D" type="RayCast2D" parent="."]
+[node name="PlatformRayCast" type="RayCast2D" parent="."]
 position = Vector2(0, -4)
 target_position = Vector2(0, 5)
 collision_mask = 2

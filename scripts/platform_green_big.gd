@@ -1,18 +1,30 @@
+class_name Platform2D
 extends StaticBody2D
 
-
-@onready var collision: CollisionShape2D = $CollisionShape2D
-@onready var area: Area2D = $Area2D
-
-
-func drop() -> void:
-	area.set_deferred("monitoring", true)
+@onready var collision: CollisionShape2D = $CollisionShape
+@onready var monitoring_area: Area2D = $MonitoringArea
 
 
-func _on_area_2d_body_entered(_body: Node2D) -> void:
-	collision.set_deferred("disabled", true)
+func drop_through():
+	_enable_monitoring.call_deferred()
 
 
-func _on_area_2d_body_exited(_body: Node2D) -> void:
-	collision.set_deferred("disabled", false)
-	area.set_deferred("monitoring", false)
+func _on_monitoring_area_body_entered(_body: Node2D):
+	_disable_collision.call_deferred()
+
+
+func _on_monitoring_area_body_exited(_body: Node2D):
+	_enable_collision.call_deferred()
+
+
+func _enable_monitoring():
+	monitoring_area.monitoring = true
+
+
+func _disable_collision():
+	collision.disabled = true
+
+
+func _enable_collision():
+	collision.disabled = false
+	monitoring_area.monitoring = false
