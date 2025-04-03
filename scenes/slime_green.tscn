@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://dyqmbo66567qp"]
+[gd_scene load_steps=10 format=3 uid="uid://dyqmbo66567qp"]
 
 [ext_resource type="Texture2D" uid="uid://d21s6k5g4lxgb" path="res://assets/sprites/slime_green.png" id="1_kw873"]
 [ext_resource type="Script" uid="uid://cavjs0kovvcl0" path="res://scripts/slime_green.gd" id="1_lh1w4"]
@@ -39,30 +39,39 @@ animations = [{
 "speed": 10.0
 }]
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_lh1w4"]
+size = Vector2(14, 12)
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ppyls"]
-size = Vector2(14, 15)
+size = Vector2(14, 12)
 
-[node name="SlimeGreen" type="Node2D"]
+[node name="SlimeGreen" type="CharacterBody2D"]
 z_index = 9
+collision_layer = 4
+collision_mask = 3
 script = ExtResource("1_lh1w4")
+max_distance = 1500.0
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+[node name="AnimatedSprite" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -12)
 sprite_frames = SubResource("SpriteFrames_bmd3v")
 animation = &"idle"
 autoplay = "idle"
 
-[node name="Area2D" type="Area2D" parent="."]
-position = Vector2(0, -12)
+[node name="CollisionShape" type="CollisionShape2D" parent="."]
+position = Vector2(0, -6)
+shape = SubResource("RectangleShape2D_lh1w4")
+
+[node name="HitRange" type="Area2D" parent="."]
+position = Vector2(0, -6)
 collision_layer = 0
 collision_mask = 8
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
-position = Vector2(0, 4.5)
+[node name="CollisionShape" type="CollisionShape2D" parent="HitRange"]
 shape = SubResource("RectangleShape2D_ppyls")
 
-[node name="RayCast2D" type="RayCast2D" parent="."]
-position = Vector2(0, -7.5)
+[node name="WallRayCast" type="RayCast2D" parent="."]
+position = Vector2(0, -6)
 target_position = Vector2(8, 0)
 
-[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
+[connection signal="body_entered" from="HitRange" to="." method="_on_hit_range_body_entered"]
